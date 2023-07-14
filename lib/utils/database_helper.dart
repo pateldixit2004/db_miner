@@ -12,7 +12,7 @@ class Databasehelper {
   Database? Quotesdatabase;
 
   final String Dbpath = "database.db";
-  final String QuotesDbpath = "quotesdatabase.db";
+  // final String QuotesDbpath = "quotesdatabase.db";
 
   String datatable = 'datatable';
   String quotestable = 'quotestable';
@@ -27,13 +27,7 @@ class Databasehelper {
       return await intDb();
     }
   }
-  Future<Database?> quotescheckDb() async {
-    if (Quotesdatabase != null) {
-      return database;
-    } else {
 
-    }
-  }
   Future<Database> intDb() async {
     Directory dir = await getApplicationDocumentsDirectory();
     String path = join(dir.path, Dbpath);
@@ -51,16 +45,17 @@ class Databasehelper {
   Future<void> insertdb({AddModel? model}) async {
     // database=await  instance.da
     database = await checkDb();
-    await database!
-        .insert('$datatable', {"categery":model!.categery});
+    await database!.insert('$datatable', {"categery":model!.categery});
+    await database!.insert('$quotestable', {"categery":model.categery,"quotes":model.quotes});
   }
-  Future<List<Map>> readDb() async {
+  Future<List> readDb() async {
     database = await checkDb();
     String quary = "SELECT * FROM $datatable";
     String quary1 = "SELECT * FROM $datatable";
     List<Map> l1 = await database!.rawQuery(quary);
     List<Map> l2 = await database!.rawQuery(quary1);
-    return l1;
+    List l3=[l1,l2];
+    return l3;
   }
 
 //
